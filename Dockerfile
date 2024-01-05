@@ -1,21 +1,9 @@
-# Utiliza la imagen de Heroku con Node.js
-FROM heroku/nodejs
-
-# Establece el directorio de trabajo en /app
+FROM node:18-bullseye as bot
 WORKDIR /app
-
-# Copia el archivo package.json y package-lock.json (si existe)
 COPY package*.json ./
-
-# Instala las dependencias
-RUN npm ci --only=production
-
-# Copia el resto de la aplicación
+RUN npm i
 COPY . .
-
-# Expone el puerto que utilizará la aplicación (por defecto Heroku utiliza el puerto 3000)
-# Si necesitas un puerto específico, asegúrate de configurar la variable de entorno PORT
-EXPOSE $PORT
-
-# Comando para ejecutar la aplicación
+ARG RAILWAY_STATIC_URL
+ARG PUBLIC_URL
+ARG PORT
 CMD ["npm", "start"]
